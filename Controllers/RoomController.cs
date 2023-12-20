@@ -1,15 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
+using net_ita_2_checkpoint.DTOs;
+using net_ita_2_checkpoint.Services.Interfaces;
 
 namespace net_ita_2_checkpoint.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RoomController
+    public class RoomController : ControllerBase
     {
+        private readonly IRoomService _service;
+
+        public RoomController(IRoomService service)
+        {
+            _service = service;
+        }
+
         [HttpGet("All")]
         public async Task<IActionResult> GetAllRoomsAsync()
         {
-            throw new NotImplementedException();
+            return Ok(await _service.GetAllRoomsAsync());
+            
         }
 
         [HttpGet("Available")]
@@ -21,25 +31,31 @@ namespace net_ita_2_checkpoint.Controllers
         [HttpGet("Detail")]
         public async Task<IActionResult> GetRoomAsync(Guid id)
         {
-            throw new NotImplementedException();
+           return Ok(await _service.GetRoomAsync(id));
+            
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostRoomAsync()
+        public async Task<IActionResult> PostRoomAsync([FromBody] CreateRoomDTO dto)
         {
-            throw new NotImplementedException();
+           await _service.CreateRoomAsync(dto);
+            return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutRoomAsync()
+        public async Task<IActionResult> PutRoomAsync(Guid id , UpdateRoomDTO dto)
         {
-            throw new NotImplementedException();
+            await _service.UpdateRoomAsync(id, dto);
+            return Ok();
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteRoomAsync(Guid id)
         {
-            throw new NotImplementedException();
+           await _service.DeleteRoomAsync(id);
+           return Ok();
+           
+            
         }
     }
 }

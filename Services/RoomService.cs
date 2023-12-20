@@ -1,5 +1,6 @@
 using net_ita_2_checkpoint.Context;
 using net_ita_2_checkpoint.DTOs;
+using net_ita_2_checkpoint.Entities;
 using net_ita_2_checkpoint.Services.Interfaces;
 
 namespace net_ita_2_checkpoint.Services
@@ -13,32 +14,79 @@ namespace net_ita_2_checkpoint.Services
             _db = db;
         }
 
-        public Task CreateRoomAsync(CreateRoomDTO dto)
+        public async Task CreateRoomAsync(CreateRoomDTO dto)
         {
-            throw new NotImplementedException();
+            var room = new Room()
+            {
+                Name = dto.Name,
+                Type = dto.Type,
+                People = dto.People,
+                Price = dto.Price
+            };
+
+            _db.Rooms.Add(room);
+
+
         }
 
-        public Task DeleteRoomAsync(Guid id)
+        public async Task DeleteRoomAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var room = _db.Rooms.Find(r => r.Id == id) ?? throw new Exception("Null Value");
+            _db.Rooms.Remove(room);
+
         }
 
-        public Task<ICollection<RoomListDTO>> GetAllRoomsAsync()
+        public async Task UpdateRoomAsync(Guid id, UpdateRoomDTO dto)
         {
-            throw new NotImplementedException();
+
+            var room = _db.Rooms.Find(r => r.Id == id) ?? throw new Exception("Null Value");
+
+            room.Name = dto.Name;
+            room.Type = dto.Type;
+            room.People = dto.People;
+            room.Price = dto.Price;
+
         }
 
-        public Task<ICollection<RoomListDTO>> GetAvailableRoomsAsync(DateTime date)
+        public async Task<ICollection<RoomListDTO>> GetAllRoomsAsync()
         {
-            throw new NotImplementedException();
+            return _db.Rooms.Select(r => new RoomListDTO()
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Type = r.Type,
+                People = r.People,
+                Price = r.Price
+
+            }).ToList();
         }
 
-        public Task<RoomDetailDTO> GetRoomAsync(Guid id)
+
+
+        public async Task<RoomDetailDTO> GetRoomAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return _db.Rooms.GroupJoin(
+                _db.Reservations,
+                room => room.Id,
+                reservation => reservation.RoomId,
+                (room, reservation) => new RoomDetailDTO()
+                {
+                    Id = room.Id,
+                    Name = room.Name,
+                    Type = room.Type,
+                    People = room.People,
+                    Price = room.Price,
+                    Reservations = reservation.Select(r => new RoomReservationDTO()
+                    {
+                        Date = r.Date,
+                        People = r.People,
+                        RoomId = r.RoomId
+                    }).ToList()
+                }).FirstOrDefault(r => r.Id == id) ?? throw new Exception("Null Value");
+
         }
 
-        public Task UpdateRoomAsync(UpdateRoomDTO dto)
+        public async Task<ICollection<RoomListDTO>> GetAvailableRoomsAsync(DateTime date)
         {
             throw new NotImplementedException();
         }

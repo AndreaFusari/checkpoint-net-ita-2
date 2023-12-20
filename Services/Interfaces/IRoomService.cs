@@ -8,7 +8,7 @@ namespace net_ita_2_checkpoint.Services.Interfaces
         Task<ICollection<RoomListDTO>> GetAvailableRoomsAsync(DateTime date);
         Task<RoomDetailDTO> GetRoomAsync(Guid id);
         Task CreateRoomAsync(CreateRoomDTO dto);
-        Task UpdateRoomAsync(UpdateRoomDTO dto);
+        Task UpdateRoomAsync(Guid id, UpdateRoomDTO dto);
         Task DeleteRoomAsync(Guid id);
     }
 }

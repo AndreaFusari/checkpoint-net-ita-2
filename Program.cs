@@ -1,8 +1,14 @@
 using net_ita_2_checkpoint.Context;
+using net_ita_2_checkpoint.Services;
+using net_ita_2_checkpoint.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddSingleton<IDbContext, DbContext>();
+
 
 builder.Services.AddSingleton<IDbContext, DbContext>();
 
