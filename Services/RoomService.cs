@@ -69,14 +69,14 @@ namespace net_ita_2_checkpoint.Services
                 _db.Reservations,
                 room => room.Id,
                 reservation => reservation.RoomId,
-                (room, reservation) => new RoomDetailDTO()
+                (room, reservations) => new RoomDetailDTO()
                 {
                     Id = room.Id,
                     Name = room.Name,
                     Type = room.Type,
                     People = room.People,
                     Price = room.Price,
-                    Reservations = reservation.Select(r => new RoomReservationDTO()
+                    Reservations = reservations.Select(r => new RoomReservationDTO()
                     {
                         Date = r.Date,
                         People = r.People,
@@ -88,7 +88,19 @@ namespace net_ita_2_checkpoint.Services
 
         public async Task<ICollection<RoomListDTO>> GetAvailableRoomsAsync(DateTime date)
         {
-            throw new NotImplementedException();
+            return _db.Rooms.Where(room => !_db.Reservations.Any(r => r.RoomId == room.Id && r.Date == date))
+                .Select(room => new RoomListDTO()
+                {
+                    Id = room.Id,
+                    Name = room.Name,
+                    Type = room.Type,
+                    People = room.People,
+                    Price = room.Price,
+
+                }).ToList();
         }
-    }
-}
+
+                   }
+               }
+
+                  

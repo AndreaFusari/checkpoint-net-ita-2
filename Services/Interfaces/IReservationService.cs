@@ -6,6 +6,6 @@ namespace net_ita_2_checkpoint.Services.Interfaces
     public interface IReservationService
     {
         Task CreateAsync(RoomReservationDTO reservation);
-        Task<List<Room>> GetAllAsync();
+        Task<List<Reservation>> GetAllAsync();
     }
 }

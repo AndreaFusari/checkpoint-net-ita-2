@@ -25,9 +25,9 @@ namespace net_ita_2_checkpoint.Services
             }) ;
         }
 
-        public async Task<List<Room>> GetAllAsync()
+        public async Task<List<Reservation>> GetAllAsync()
         {
-            return _db.Rooms.ToList();
+            return _db.Reservations.ToList();
         }
 
     }

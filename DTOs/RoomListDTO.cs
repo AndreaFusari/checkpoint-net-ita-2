@@ -7,5 +7,7 @@ namespace net_ita_2_checkpoint.DTOs
         public string? Type { get; set; }
         public decimal Price { get; set; }
         public int People { get; set; }
+        
+       
     }
 }

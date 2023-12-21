@@ -25,7 +25,7 @@ namespace net_ita_2_checkpoint.Controllers
         [HttpGet("Available")]
         public async Task<IActionResult> GetAvailableRoomsAsync(DateTime date)
         {
-            throw new NotImplementedException();
+            return Ok(_service.GetAvailableRoomsAsync(date));
         }
 
         [HttpGet("Detail")]
